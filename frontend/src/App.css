@@ -94,3 +94,9 @@
   height: auto;
   border-radius: 20px;
 }
+
+.landingImage {
+  width: 800%; /* Increase size slightly */
+  max-width: 400px; /* Prevents it from getting too big */
+  height: auto; /* Keeps aspect ratio */
+}
