@@ -24,13 +24,21 @@ app.use(express.urlencoded({ limit: "40kb", extended: true }));
 app.use("/api/v1/users", userRoutes);
 
 const start = async () => {
-  app.set("mongo_user");
-  const connectionDb = await mongoose.connect(process.env.MONGO_URI);
+  try {
+    const connectionDb = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected at Host: ${connectionDb.connection.host}`);
 
-  console.log(`MONGO Connected DB HOst: ${connectionDb.connection.host}`);
-  server.listen(app.get("port"), () => {
-    console.log("LISTENIN ON PORT 8000");
-  });
+    server.listen(app.get("port"), () => {
+      console.log(`Server listening on port ${app.get("port")}`);
+    });
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+    process.exit(1); // Exit if DB connection fails
+  }
 };
+
 
 start();
